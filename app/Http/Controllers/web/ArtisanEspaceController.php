@@ -220,7 +220,21 @@ class ArtisanEspaceController extends Controller
             'places_max'  => 'required|integer|min:1',
             'lieu'        => 'nullable|string|max:200',
             'is_active'   => 'boolean',
+            'image'       => 'nullable|image|max:3072',
         ]);
+
+        if ($request->hasFile('image')) {
+            if ($formation->image) {
+                \Storage::disk('public')->delete($formation->image);
+            }
+            $artisan = auth()->user()->artisan;
+            $validated['image'] = $request->file('image')
+                ->store("formations/{$artisan->id}", 'public');
+        } else {
+            unset($validated['image']);
+        }
+
+        $validated['is_active'] = $request->boolean('is_active');
 
         $formation->update($validated);
 

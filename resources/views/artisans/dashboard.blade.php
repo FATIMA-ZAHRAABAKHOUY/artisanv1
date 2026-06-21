@@ -205,6 +205,72 @@
       </div>
     </div>
 
+    {{-- Mes Formations --}}
+    @php
+      $formations = $artisan?->formations()
+          ->withCount(['inscriptions as inscriptions_count',
+                       'inscriptions as en_cours' => fn($q) => $q->where('statut_inscription','en_cours')])
+          ->orderByDesc('created_at')->take(4)->get() ?? collect();
+    @endphp
+    <div class="dash-card mt-4">
+      <h3 style="margin-bottom:16px;">
+        <i class="bi bi-mortarboard" style="color:var(--or);"></i>
+        Mes Formations
+        <a href="{{ route('artisan.formations') }}" style="font-size:13px;color:var(--or-dark);margin-left:auto;font-family:var(--font-sans);">Gérer</a>
+      </h3>
+      @forelse($formations as $f)
+        <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--sable-dark);flex-wrap:wrap;">
+          {{-- Image ou icône --}}
+          <div style="width:48px;height:48px;border-radius:8px;overflow:hidden;flex-shrink:0;
+                      background:linear-gradient(135deg,var(--ame-charbon-deep),var(--ame-terre-dark));
+                      display:flex;align-items:center;justify-content:center;">
+            @if($f->image)
+              <img src="{{ $f->image_url }}" alt="" style="width:100%;height:100%;object-fit:cover;">
+            @else
+              <i class="bi bi-mortarboard" style="color:rgba(255,255,255,0.35);font-size:20px;"></i>
+            @endif
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              {{ $f->titre }}
+            </div>
+            <div style="font-size:12px;color:var(--gris-doux);">
+              <i class="bi bi-calendar3 me-1"></i>{{ $f->date_debut?->format('d/m/Y') }}
+              &nbsp;·&nbsp;{{ $f->inscriptions_count }} inscrit(s) · {{ $f->en_cours ?? 0 }} en cours
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <span style="font-size:11px;padding:3px 10px;border-radius:20px;
+                         background:{{ $f->is_active ? '#d1fae5' : '#fee2e2' }};
+                         color:{{ $f->is_active ? '#065f46' : '#991b1b' }};">
+              {{ $f->is_active ? 'Active' : 'Inactive' }}
+            </span>
+            <a href="{{ route('artisan.formations.edit', $f->id) }}"
+               style="font-size:12px;color:var(--or-dark);text-decoration:none;padding:4px 10px;
+                      border:1px solid var(--sable-dark);border-radius:var(--radius-sm);">
+              Modifier
+            </a>
+          </div>
+        </div>
+      @empty
+        <p style="color:var(--gris-doux);font-size:14px;margin-bottom:14px;">
+          Vous n'avez pas encore créé de formation.
+        </p>
+      @endforelse
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+        <a href="{{ route('artisan.formations.create') }}" class="btn-or"
+           style="padding:10px 22px;font-size:14px;">
+          <i class="bi bi-plus-circle me-2"></i>Créer une formation
+        </a>
+        @if($formations->isNotEmpty())
+          <a href="{{ route('artisan.formations') }}" class="btn-outline-or"
+             style="padding:10px 18px;font-size:14px;">
+            <i class="bi bi-list-ul me-2"></i>Toutes mes formations
+          </a>
+        @endif
+      </div>
+    </div>
+
     {{-- Revenus graphique placeholder --}}
     <div class="dash-card mt-4">
       <h3><i class="bi bi-bar-chart" style="color:var(--or);"></i>Revenus des 6 derniers mois</h3>

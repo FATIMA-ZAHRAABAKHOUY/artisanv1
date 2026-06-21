@@ -16,9 +16,18 @@
 }
 .formation-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
 .formation-img {
-    height: 180px; position: relative;
+    height: 200px; position: relative; overflow: hidden;
     background: linear-gradient(135deg, var(--ame-charbon-deep), var(--ame-terre-dark));
-    display: flex; align-items: center; justify-content: center; font-size: 60px;
+}
+.formation-img img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.4s ease;
+}
+.formation-card:hover .formation-img img { transform: scale(1.04); }
+.formation-img-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px; color: rgba(255,255,255,0.25);
 }
 .places-bar { height: 5px; background: var(--sable-dark); border-radius: 3px; overflow: hidden; }
 .places-fill { height: 100%; border-radius: 3px;
@@ -99,8 +108,6 @@
       </form>
     </div>
 
-    @php $emojis = ['🧵','🎨','🌿','🪡','✂️','🏺','👘','🌸']; @endphp
-
     @if($formations->isEmpty())
       <div style="text-align:center;padding:80px 20px;">
         <div style="font-size:64px;margin-bottom:16px;">🎓</div>
@@ -109,7 +116,7 @@
       </div>
     @else
       <div class="row g-3">
-        @foreach($formations as $i => $f)
+        @foreach($formations as $f)
           @php
             $inscrits = $f->inscriptions()->where('statut_inscription','en_cours')->count();
             $pct = $f->places_max > 0 ? min(100, ($inscrits/$f->places_max)*100) : 0;
@@ -118,7 +125,15 @@
           <div class="col-md-6 col-lg-4">
             <div class="formation-card">
               <div class="formation-img">
-                {{ $emojis[$i % count($emojis)] }}
+                @if($f->image)
+                  <img src="{{ $f->image_url }}"
+                       alt="{{ $f->titre }}"
+                       loading="lazy">
+                @else
+                  <div class="formation-img-fallback">
+                    <i class="bi bi-mortarboard"></i>
+                  </div>
+                @endif
                 @if($f->prix == 0)
                   <span style="position:absolute;top:12px;left:12px;background:var(--vert-atlas);
                                color:white;font-size:11px;padding:3px 10px;border-radius:20px;
