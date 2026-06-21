@@ -1,7 +1,7 @@
 {{-- ================================================================
      resources/views/auth/forgot-password.blade.php
 ================================================================ --}}
-@extends('layouts.app')
+@extends('layouts.auth')
 @section('title', 'Mot de passe oublié')
 
 @section('content')
@@ -12,9 +12,16 @@
                 max-width:440px;width:100%;margin:0 auto;overflow:hidden;">
       <div style="background:linear-gradient(135deg,var(--indigo),var(--or-dark));
                   padding:36px 40px;text-align:center;color:white;">
-        <div style="font-size:40px;margin-bottom:12px;">🔑</div>
-        <h1 style="font-family:'Amiri',serif;font-size:26px;margin:0 0 6px;">Mot de passe oublié</h1>
-        <p style="color:rgba(255,255,255,0.75);font-size:14px;margin:0;">
+        <div style="
+            width:64px;height:64px;border-radius:50%;
+            background:rgba(255,255,255,0.18);
+            display:flex;align-items:center;justify-content:center;
+            margin:0 auto 14px;
+        ">
+          <i class="bi bi-key" style="font-size:30px;color:#fff;"></i>
+        </div>
+        <h1 style="font-family:'Amiri',serif;font-size:32px;letter-spacing:0.3px;margin:0 0 8px;">Mot de passe oublié</h1>
+        <p style="color:rgba(255,255,255,0.80);font-size:15px;margin:0;">
           Saisissez votre email pour recevoir un lien de réinitialisation
         </p>
       </div>
