@@ -20,6 +20,7 @@
 .admin-main { flex:1; background:var(--sable); padding:28px 32px; min-width:0; }
 .admin-filter { background:white; border-radius:var(--radius); border:1px solid var(--sable-dark); padding:16px; margin-bottom:20px; }
 .admin-filter label { font-size:12px; color:var(--gris-doux); display:block; margin-bottom:4px; }
+.alert-tissu.warning { border-color:#D97706; background:#FEF9EC; color:#92400E; }
 @media (max-width:991px) {
     .admin-layout { flex-direction:column; }
     .admin-sidebar { width:100%; }

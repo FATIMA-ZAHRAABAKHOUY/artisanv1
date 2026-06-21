@@ -140,10 +140,11 @@
         }
 
         .navbar-brand-wrap {
-            padding: 14px 0;
+            padding: 12px 0;
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
         }
 
         .brand-logo-img {
@@ -178,9 +179,10 @@
         /* Nav links */
         .nav-main .nav-link {
             color: var(--texte) !important;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 500;
-            padding: 22px 16px !important;
+            padding: 20px 10px !important;
+            white-space: nowrap;
             position: relative;
             transition: var(--transition);
         }
@@ -189,8 +191,8 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 16px;
-            right: 16px;
+            left: 10px;
+            right: 10px;
             height: 2px;
             background: linear-gradient(90deg, var(--ame-terre), var(--ame-fil-or));
             transform: scaleX(0);
@@ -263,8 +265,8 @@
         .search-bar {
             display: flex;
             gap: 0;
-            max-width: 340px;
-            width: 100%;
+            width: 185px;
+            flex-shrink: 0;
         }
 
         .search-bar input {
@@ -1024,7 +1026,7 @@
 ═══════════════════════════════════════════════════════ --}}
 <nav class="navbar-main">
     <div class="container-xl">
-        <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="d-flex align-items-center w-100" style="flex-wrap:nowrap;gap:16px;">
 
             {{-- Brand --}}
             <a href="{{ route('home') }}" class="navbar-brand-wrap text-decoration-none">
@@ -1035,7 +1037,7 @@
             </a>
 
             {{-- Nav links --}}
-            <ul class="nav nav-main d-none d-lg-flex mb-0">
+            <ul class="nav nav-main d-none d-lg-flex mb-0" style="flex:1;justify-content:center;flex-wrap:nowrap;">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
                        href="{{ route('home') }}">Accueil</a>
@@ -1089,15 +1091,14 @@
                 </li>
             </ul>
 
-            {{-- Barre de recherche --}}
-            <form action="{{ route('catalogue.index') }}" method="GET" class="search-bar">
-                <input type="text" name="q" placeholder="Rechercher un produit..."
-                       value="{{ request('q') }}">
-                <button type="submit"><i class="bi bi-search"></i></button>
-            </form>
-
-            {{-- Actions --}}
-            <div class="d-flex align-items-center gap-2 navbar-actions">
+            {{-- Droite : recherche + actions --}}
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                <form action="{{ route('catalogue.index') }}" method="GET" class="search-bar">
+                    <input type="text" name="q" placeholder="Rechercher…"
+                           value="{{ request('q') }}">
+                    <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+                <div class="d-flex align-items-center gap-1 navbar-actions">
                 {{-- Panier --}}
                 <a href="{{ route('panier.index') }}" class="action-icon" title="Mon panier">
                     <i class="bi bi-bag"></i>
@@ -1168,7 +1169,8 @@
                         <i class="bi bi-person"></i>
                     </a>
                 @endauth
-            </div>
+                </div>{{-- /navbar-actions --}}
+            </div>{{-- /navbar-right --}}
         </div>
     </div>
 </nav>

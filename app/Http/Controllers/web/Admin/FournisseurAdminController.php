@@ -31,9 +31,11 @@ class FournisseurAdminController extends Controller
 
         $fournisseurs = $query->orderBy('nom')->paginate(15);
 
-        $enAttente = Fournisseur::where('statut', 'inactif')->whereNotNull('user_id')->count();
+        $enAttente   = Fournisseur::where('statut', 'inactif')->whereNotNull('user_id')->count();
+        $total       = Fournisseur::count();
+        $totalActifs = Fournisseur::where('statut', 'actif')->count();
 
-        return view('admin.fournisseurs.index', compact('fournisseurs', 'enAttente'));
+        return view('admin.fournisseurs.index', compact('fournisseurs', 'enAttente', 'total', 'totalActifs'));
     }
 
     public function create()
